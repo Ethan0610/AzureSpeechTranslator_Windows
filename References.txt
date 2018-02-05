@@ -1,0 +1,7 @@
+speech to text: https://docs.microsoft.com/en-us/azure/cognitive-services/speech/getstarted/getstartedrest?tabs=Powershell
+text to text (and text to speech): https://docs.microsofttranslator.com/text-translate.html#/
+
+
+stans keys:
+speech: 718d46a9ac824e428aebf37daf67b04c
+text: 2e9794454bf74ac08a8388799654c48c
