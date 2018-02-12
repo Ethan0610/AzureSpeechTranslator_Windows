@@ -1,7 +1,28 @@
 speech to text: https://docs.microsoft.com/en-us/azure/cognitive-services/speech/getstarted/getstartedrest?tabs=Powershell
 text to text (and text to speech): https://docs.microsofttranslator.com/text-translate.html#/
 
+https://stackoverflow.com/questions/17982468/naudio-record-sound-from-microphone-then-save
 
-stans keys:
-speech: 718d46a9ac824e428aebf37daf67b04c
-text: 2e9794454bf74ac08a8388799654c48c
+Ryans keys:
+text: 1263cdd8ad3049a6b545d6ad9bb50ca6
+bing speech: c5f65b8e00814055ba10d275ea8facdd
+
+	private void GetMics()
+        {
+            int waveInDevices = WaveIn.DeviceCount; //how many recording devices are there on the device
+            for (int waveInDevice = 0; waveInDevice < waveInDevices; waveInDevice++) //loop through and find all of the devices
+            {
+                WaveInCapabilities deviceInfo = WaveIn.GetCapabilities(waveInDevice);
+                Mics.Add(new Container() { Content = deviceInfo.ProductName, Tag = waveInDevice }); //add the devices
+            }
+        }
+
+        private void GetSpeakers()
+        {
+            int waveOutDevices = WaveOut.DeviceCount; //get the wave out device count
+            for (int waveOutDevice = 0; waveOutDevice < waveOutDevices; waveOutDevice++) //get all the wave out audio devices on the device and put them in a combo box
+            {
+                WaveOutCapabilities deviceInfo = WaveOut.GetCapabilities(waveOutDevice);
+                Speakers.Add(new Container() { Content = deviceInfo.ProductName, Tag = waveOutDevice });
+            }
+        }
