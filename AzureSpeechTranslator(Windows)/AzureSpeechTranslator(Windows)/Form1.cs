@@ -75,7 +75,21 @@ namespace AzureSpeechTranslator_Windows_
                     speakButton.Enabled = true;
                     break;
                 }
+                if (toLang == "zh-CHS" || toLang == "zh-CHT")
+                {
+                    speakButton.Enabled = true;
+                    toLang = "zh-chs";
+                }
             }
+            if (TextInput.Text != "")
+            {
+                textOutputLabel.Text = TextTranslate(TextInput.Text, TranslateFromText.Text, toLang);
+            }
+            else
+            {
+                AudioToText();
+            }
+
 
 
         }
@@ -144,22 +158,7 @@ namespace AzureSpeechTranslator_Windows_
             }
         }
 
-        private void recordButton_Click(object sender, EventArgs e)
-        {
-            recordButton.Enabled = false;
-            stopButton.Enabled = true;
-
-            waveSource = new WaveIn();
-            waveSource.WaveFormat = new WaveFormat(44100, 1);
-
-            waveSource.DataAvailable += new EventHandler<WaveInEventArgs>(waveSource_DataAvailable);
-            waveSource.RecordingStopped += new EventHandler<StoppedEventArgs>(waveSource_RecordingStopped);
-
-            waveFile = new WaveFileWriter(@"Test0001.wav", waveSource.WaveFormat);
-
-            waveSource.StartRecording();
-
-        }
+      
 
         void waveSource_DataAvailable(object sender, WaveInEventArgs e)
         {
@@ -184,7 +183,7 @@ namespace AzureSpeechTranslator_Windows_
                 waveFile = null;
             }
 
-            recordButton.Enabled = true;
+            StartBtn.Enabled = true;
         }
 
         private void speakButton_Click(object sender, EventArgs e)
@@ -192,17 +191,10 @@ namespace AzureSpeechTranslator_Windows_
             Speak();
         }
 
-        private void stopButton_Click(object sender, EventArgs e)
-        {
-            stopButton.Enabled = false;
-
-            waveSource.StopRecording();
-
-
-        }
 
         public void AudioToText()
         {
+            //string requestUri = $"https://speech.platform.bing.com/speech/recognition/interactive/cognitiveservices/v1?language={TranslateFromText.Text}&format=detailed";
             string requestUri = "https://speech.platform.bing.com/speech/recognition/interactive/cognitiveservices/v1?language=en-US&format=detailed";
 
             HttpWebRequest request = null;
@@ -212,7 +204,7 @@ namespace AzureSpeechTranslator_Windows_
             request.Method = "POST";
             request.ProtocolVersion = HttpVersion.Version11;
             request.ContentType = @"audio/wav; codec=audio/pcm; samplerate=16000";
-            request.Headers["Ocp-Apim-Subscription-Key"] = "YOUR_SUBSCRIPTION_KEY";
+            request.Headers["Ocp-Apim-Subscription-Key"] = "c5f65b8e00814055ba10d275ea8facdd";
 
             // Send an audio file by 1024 byte chunks
             using (FileStream fs = new FileStream("Test0001.wav", FileMode.Open, FileAccess.Read))
@@ -237,9 +229,48 @@ namespace AzureSpeechTranslator_Windows_
                     // Flush
                     requestStream.Flush();
                 }
+
+                string responseString = "";
+               
+                using (WebResponse response = request.GetResponse())
+                {
+                    //Console.WriteLine(((HttpWebResponse)response).StatusCode);
+
+                    using (StreamReader sr = new StreamReader(response.GetResponseStream()))
+                    {
+                        responseString = sr.ReadToEnd();
+                    }
+                    //result = JsonConvert.DeserializeObject<AudioToTextResult>.responseString;
+                    TextInput.Text = responseString;
+
+                }
             }
         }
+        private void StartBtn_Click(object sender, EventArgs e)
+        {
+            TextInput.Enabled = false;
+            StartBtn.Enabled = false;
+            StopBtn.Enabled = true;
 
+            waveSource = new WaveIn();
+            waveSource.WaveFormat = new WaveFormat(44100, 1);
+
+            waveSource.DataAvailable += new EventHandler<WaveInEventArgs>(waveSource_DataAvailable);
+            waveSource.RecordingStopped += new EventHandler<StoppedEventArgs>(waveSource_RecordingStopped);
+
+            waveFile = new WaveFileWriter(@"Test0001.wav", waveSource.WaveFormat);
+
+            waveSource.StartRecording();
+        }
+
+        private void StopBtn_Click(object sender, EventArgs e)
+        {
+            StopBtn.Enabled = false;
+
+            waveSource.StopRecording();
+
+
+        }
 
 
     }// end of form class
