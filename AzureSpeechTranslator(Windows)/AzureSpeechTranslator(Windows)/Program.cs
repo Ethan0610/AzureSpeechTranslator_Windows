@@ -29,8 +29,8 @@ namespace AzureSpeechTranslator_Windows_
             //client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "da59809d501942fcac0b109fa83552a0");
             //client.BaseAddress = new Uri("wss://dev.microsofttranslator.com/");
 
-            var client = new HttpClient();
-            client.BaseAddress = new Uri("https://dev.microsofttranslator.com/languages?api-version=1.0&scope=text,tts,speech");
+            //var client = new HttpClient();
+            //client.BaseAddress = new Uri("https://dev.microsofttranslator.com/languages?api-version=1.0&scope=text,tts,speech");
                 
 
 

@@ -48,12 +48,22 @@ namespace AzureSpeechTranslator_Windows_
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            List<string> langs = GetLanguagesForTranslate();
+            List<string> langsForTrans = GetLanguagesForTranslate();
 
-            foreach (string lang in langs)
+            foreach (string lang in langsForTrans)
             {
                 TranslateFromText.Items.Add(lang);
                 TranslateToText.Items.Add(lang);
+                
+            }
+            List<string> langsForSpeak = GetLanguagesForSpeak();
+            for (int i = 0; i < langsForSpeak.Count; i++)
+            {
+                int Length = langsForSpeak[i].Length;
+                if(Length > 3)
+                {
+                    TranslateFromVoice.Items.Add(langsForSpeak[i]);
+                }
             }
 
         }
@@ -81,17 +91,14 @@ namespace AzureSpeechTranslator_Windows_
                     toLang = "zh-chs";
                 }
             }
-            if (TextInput.Text != "")
+            //if (TextInput.Text != "")
             {
                 textOutputLabel.Text = TextTranslate(TextInput.Text, TranslateFromText.Text, toLang);
             }
-            else
+            //else
             {
-                AudioToText();
+                //AudioToText();
             }
-
-
-
         }
 
 
@@ -194,8 +201,15 @@ namespace AzureSpeechTranslator_Windows_
 
         public void AudioToText()
         {
-            //string requestUri = $"https://speech.platform.bing.com/speech/recognition/interactive/cognitiveservices/v1?language={TranslateFromText.Text}&format=detailed";
-            string requestUri = "https://speech.platform.bing.com/speech/recognition/interactive/cognitiveservices/v1?language=en-US&format=detailed";
+            string requestUri = $"https://speech.platform.bing.com/speech/recognition/interactive/cognitiveservices/v1?language={TranslateFromVoice.Text}&format=detailed";
+
+            //ES ---------------------
+            //string requestUri = "https://speech.platform.bing.com/speech/recognition/interactive/cognitiveservices/v1?language=es-es&format=detailed";
+            //ar-eg
+            //string requestUri = "https://speech.platform.bing.com/speech/recognition/interactive/cognitiveservices/v1?language=ar-eg&format=detailed";
+            //en-us
+            //string requestUri = "https://speech.platform.bing.com/speech/recognition/interactive/cognitiveservices/v1?language=en-us&format=detailed";
+
 
             HttpWebRequest request = null;
             request = (HttpWebRequest)HttpWebRequest.Create(requestUri);
@@ -240,8 +254,25 @@ namespace AzureSpeechTranslator_Windows_
                     {
                         responseString = sr.ReadToEnd();
                     }
-                    //result = JsonConvert.DeserializeObject<AudioToTextResult>.responseString;
-                    TextInput.Text = responseString;
+                    //string result = "";
+
+                    //JsonSerializer serializer = new JsonSerializer();
+                    //var o = (JObject)serializer.Deserialize(responseString);
+                    //result = JsonConvert.DeserializeObject<AudioToTextResult>(responseString);
+
+                    //DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(responseString);
+                    //DataTable dataTable = dataSet.Tables["Nbest"];
+                    //TextInput.Text = dataTable.row["Display"];
+
+                    //TextInput.Text = responseString;
+
+                    //var result = JsonConvert.DeserializeObject<AudioToTextResult>(responseString);
+                    //var Text = responseString.[JSON].NBest.[0].Display;
+
+
+                    var jo = JObject.Parse(responseString);
+                    var text = jo["NBest"][0]["Display"].ToString();
+                    TextInput.Text = text;
 
                 }
             }
@@ -251,6 +282,8 @@ namespace AzureSpeechTranslator_Windows_
             TextInput.Enabled = false;
             StartBtn.Enabled = false;
             StopBtn.Enabled = true;
+            TranslateFromText.Enabled = false;
+            TranslateToText.Enabled = false;
 
             waveSource = new WaveIn();
             waveSource.WaveFormat = new WaveFormat(44100, 1);
@@ -270,6 +303,22 @@ namespace AzureSpeechTranslator_Windows_
             waveSource.StopRecording();
 
 
+        }
+
+        public class AudioToTextResult
+        {
+            public string Display { get; set; }
+
+        }
+
+        private void SendAudio_Click(object sender, EventArgs e)
+        {
+            AudioToText();
+
+            TextInput.Enabled = true;
+
+            TranslateFromText.Enabled = true;
+            TranslateToText.Enabled = true;
         }
 
 

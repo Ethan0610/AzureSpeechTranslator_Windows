@@ -40,6 +40,10 @@
             this.speakButton = new System.Windows.Forms.Button();
             this.StartBtn = new System.Windows.Forms.Button();
             this.StopBtn = new System.Windows.Forms.Button();
+            this.splitter1 = new System.Windows.Forms.Splitter();
+            this.TranslateFromVoice = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.SendAudio = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // SendText
@@ -59,7 +63,7 @@
             this.TextInput.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.TextInput.Multiline = true;
             this.TextInput.Name = "TextInput";
-            this.TextInput.Size = new System.Drawing.Size(463, 116);
+            this.TextInput.Size = new System.Drawing.Size(567, 116);
             this.TextInput.TabIndex = 3;
             // 
             // label1
@@ -125,7 +129,7 @@
             this.textOutputLabel.Location = new System.Drawing.Point(57, 487);
             this.textOutputLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.textOutputLabel.Name = "textOutputLabel";
-            this.textOutputLabel.Size = new System.Drawing.Size(461, 203);
+            this.textOutputLabel.Size = new System.Drawing.Size(578, 203);
             this.textOutputLabel.TabIndex = 21;
             // 
             // speakButton
@@ -163,11 +167,52 @@
             this.StopBtn.UseVisualStyleBackColor = true;
             this.StopBtn.Click += new System.EventHandler(this.StopBtn_Click);
             // 
+            // splitter1
+            // 
+            this.splitter1.Location = new System.Drawing.Point(0, 0);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(8, 788);
+            this.splitter1.TabIndex = 25;
+            this.splitter1.TabStop = false;
+            // 
+            // TranslateFromVoice
+            // 
+            this.TranslateFromVoice.FormattingEnabled = true;
+            this.TranslateFromVoice.Location = new System.Drawing.Point(372, 90);
+            this.TranslateFromVoice.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.TranslateFromVoice.Name = "TranslateFromVoice";
+            this.TranslateFromVoice.Size = new System.Drawing.Size(160, 23);
+            this.TranslateFromVoice.TabIndex = 26;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(369, 63);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(127, 15);
+            this.label2.TabIndex = 27;
+            this.label2.Text = "Record Language";
+            // 
+            // SendAudio
+            // 
+            this.SendAudio.Location = new System.Drawing.Point(564, 90);
+            this.SendAudio.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.SendAudio.Name = "SendAudio";
+            this.SendAudio.Size = new System.Drawing.Size(100, 27);
+            this.SendAudio.TabIndex = 28;
+            this.SendAudio.Text = "Send";
+            this.SendAudio.UseVisualStyleBackColor = true;
+            this.SendAudio.Click += new System.EventHandler(this.SendAudio_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(601, 788);
+            this.ClientSize = new System.Drawing.Size(710, 788);
+            this.Controls.Add(this.SendAudio);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.TranslateFromVoice);
+            this.Controls.Add(this.splitter1);
             this.Controls.Add(this.StopBtn);
             this.Controls.Add(this.StartBtn);
             this.Controls.Add(this.speakButton);
@@ -202,6 +247,10 @@
         private System.Windows.Forms.Button speakButton;
         private System.Windows.Forms.Button StartBtn;
         private System.Windows.Forms.Button StopBtn;
+        private System.Windows.Forms.Splitter splitter1;
+        private System.Windows.Forms.ComboBox TranslateFromVoice;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button SendAudio;
     }
 }
 
